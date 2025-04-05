@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>kachaka_gazebo</name>
+  <version>0.1.0</version>
+  <description>The kachaka_gazebo package</description>
+  <maintainer email="ryu.yamamoto@tier4.jp">RyuYamamoto</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+
+  <depend>geometry_msgs</depend>
+  <depend>joint_state_publisher</depend>
+  <depend>launch_ros</depend>
+  <depend>launch_xml</depend>
+  <depend>nav_msgs</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>controller_manager</depend>
+  <depend>urdf</depend>
+  <depend>xacro</depend>
+  <depend>gz_ros2_control</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

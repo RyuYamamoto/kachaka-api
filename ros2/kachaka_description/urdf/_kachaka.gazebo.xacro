@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <gazebo reference="base_link">
+      <selfCollide>true</selfCollide>
+      <mu1 value="0.0" />
+      <mu2 value="0.0" />
+  </gazebo>
+
+  <gazebo reference="laser_frame" >
+    <sensor name="lidar" type="gpu_lidar">
+      <ignition_frame_id>laser_frame</ignition_frame_id>
+      <topic>/kachaka/lidar/scan</topic>
+      <update_rate>10</update_rate>
+      <lidar>
+        <visibility_mask>4</visibility_mask>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14</min_angle>
+            <max_angle>3.14</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.15</min>
+          <max>10.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        <frame_id>laser_frame</frame_id>
+      </lidar>
+      <alwaysOn>true</alwaysOn>
+      <visualize>false</visualize>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="imu_link">
+    <sensor name="imu" type="imu">
+      <update_rate>10</update_rate>
+      <always_on>true</always_on>
+      <visualize>false</visualize>
+      <topic>/kachaka/imu/imu</topic>
+      <ignition_frame_id>imu_link</ignition_frame_id>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="camera_front_link" >
+    <sensor name="camera_front" type="camera">
+      <update_rate>10.0</update_rate>
+      <always_on>true</always_on>
+      <ignition_frame_id>camera_front_link</ignition_frame_id>
+      <topic>/kachaka/front_camera/image_raw</topic>
+      <camera name="kachaka_front_camera">
+        <horizontal_fov>0.934</horizontal_fov>
+        <image>
+          <height>720</height>
+          <width>1280</width>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>300.0</far>
+        </clip>
+      </camera>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="camera_back_link" >
+    <sensor name="camera_back" type="camera">
+      <update_rate>10.0</update_rate>
+      <always_on>true</always_on>
+      <ignition_frame_id>camera_back_link</ignition_frame_id>
+      <topic>/kachaka/back_camera/image_raw</topic>
+      <camera name="kachaka_back_camera">
+        <horizontal_fov>0.934</horizontal_fov>
+        <image>
+          <height>720</height>
+          <width>1280</width>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>300.0</far>
+        </clip>
+      </camera>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="tof_link" >
+    <sensor name="tof" type="depth_camera">
+      <update_rate>10</update_rate>
+      <ignition_frame_id>tof_link</ignition_frame_id>
+      <topic>/kachaka/tof_camera/image_raw</topic>
+      <camera>
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <height>120</height>
+          <width>160</width>
+          <format>B8G8R8</format>
+        </image>
+        <clip>
+          <near>0.5</near>
+          <far>300.0</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <always_on>true</always_on>
+      <visualize>false</visualize>
+    </sensor>
+  </gazebo>
+
+  <ros2_control name="IgnitionSystem" type="system">
+    <hardware>
+      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+    </hardware>
+    <joint name="base_l_drive_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="base_r_drive_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+  <gazebo>
+    <plugin filename="libign_ros2_control-system.so" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+      <parameters>$(find kachaka_gazebo)/config/kachaka_ros2_controller_params.yaml</parameters>
+      <ros>
+        <remapping>~/cmd_vel_unstamped:=/kachaka/manual_control/cmd_vel</remapping>
+        <remapping>~/odom:=/kachaka/odometry/odometry</remapping>
+      </ros>
+    </plugin>
+    <plugin filename="libignition-gazebo-sensors-system.so" name="ignition::gazebo::systems::Sensors"/>
+    <plugin filename="ignition-gazebo-imu-system" name="ignition::gazebo::systems::Imu"/>
+  </gazebo>
+</robot>

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<robot name="kachaka"
-       xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="kachaka" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find kachaka_description)/urdf/_materials.urdf.xacro" />
   <xacro:include filename="$(find kachaka_description)/urdf/_values.urdf.xacro" />
+  <xacro:include filename="$(find kachaka_description)/urdf/_kachaka.gazebo.xacro" />
   <xacro:include filename="$(find kachaka_description)/urdf/_kachaka.urdf.xacro" />
 
   <link name="base_footprint" />
