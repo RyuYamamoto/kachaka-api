@@ -4,17 +4,20 @@
 * 公式で提供するのは、gRPCとROS 2のブリッジ機能と、URDFなどのdescriptionです。
 
 ## 目次
-- [kachaka-api ROS 2 で提供するもの](#kachaka-api-ros-2-で提供するもの)
-- [ROS 2 Humbleのセットアップ](#ros-2-humbleのセットアップ)
-- [Dockerを使ったros2_bridgeの起動](#dockerを使ったros2_bridgeの起動)
-  - [Dockerのインストール](#dockerのインストール)
-  - [ブリッジの起動](#ブリッジの起動)
-- [動作を確認する](#動作を確認する)
-- [他のROS 2パッケージと連携する](#他のros-2パッケージと連携する)
-  - [kachaka_interfaces, kachaka_descriptionのビルド](#kachaka_interfaces-kachaka_descriptionのビルド)
-  - [RViz2による可視化](#rviz2による可視化)
-- [サンプルコード](#サンプルコード)
-- [Dockerイメージを自分でビルドする](#dockerイメージを自分でビルドする)
+- [ROS 2でカチャカAPIを利用する](#ros-2でカチャカapiを利用する)
+  - [目次](#目次)
+  - [kachaka-api ROS 2 で提供するもの](#kachaka-api-ros-2-で提供するもの)
+  - [ROS 2 Humbleのセットアップ](#ros-2-humbleのセットアップ)
+  - [Dockerを使ったros2\_bridgeの起動](#dockerを使ったros2_bridgeの起動)
+    - [Dockerのインストール](#dockerのインストール)
+    - [ブリッジの起動](#ブリッジの起動)
+    - [動作を確認する](#動作を確認する)
+  - [他のROS 2パッケージと連携する](#他のros-2パッケージと連携する)
+    - [kachaka\_interfaces, kachaka\_descriptionのビルド](#kachaka_interfaces-kachaka_descriptionのビルド)
+    - [RViz2による可視化](#rviz2による可視化)
+    - [Ignition Gazeboでのシミュレーション](#ignition-gazeboでのシミュレーション)
+  - [サンプルコード](#サンプルコード)
+  - [Dockerイメージを自分でビルドする](#dockerイメージを自分でビルドする)
 
 ## kachaka-api ROS 2 で提供するもの
 | パッケージ名 | 役割 |
@@ -103,6 +106,20 @@ cd ~/ros2_ws
 source install/setup.bash
 cd src/kachaka_description/config
 rviz2 -d kachaka.rviz
+```
+
+### Ignition Gazeboでのシミュレーション
+
+```bash
+cd ~/ros2_ws/src
+ln -s ~/kachaka-api/ros2/kachaka_gazebo kachaka_gazebo
+
+cd ~/ros2_ws
+source /opt/ros/humble/setup.bash
+colcon build
+
+source install/setup.bash
+ros2 launch kachaka_gazebo kachaka_gazebo_bringup.launch.py
 ```
 
 ## サンプルコード
